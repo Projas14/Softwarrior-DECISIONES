@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+    </head>
+
+<body>
+
+  <!--MENÚ DE CABECERA-->
+  <div class="ui teal menu">
+    <a class="header item"><b>SW DECISIONES</b></a>
+    <a class="item">BIENVENIDO <%= user.name %> </a>
+    <a href="/dashboarduser" class="item">Dashboard</a>
+    <a href="#" class="active item">Crear Sesión</a>
+    <a href="/signintosession" class="item">Ingresar a Sesión</a>
+    <div class="right menu" id="google_translate_element"></div>
+    <div class="right menu">
+      <a href="/logout" class="item">
+      <i class="sign out icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <!--SCRIPT PARA TRADUCIR PÁGINA -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- CONTENIDO -->
+  <div align="center" class="ui raised very padded text container segment">
+
+    <!-- Header -->
+    <h2 class="ui header">
+      <i class="add user icon"></i>
+      <div style="color:#008080;" class="content">
+        Crear Sesión
+        <div class="sub header">Acá podrás crear una sesión y acceder a ella.</div>
+      </div>
+    </h2>
+
+    <!-- Formulario -->
+      <form class="ui medium form" id="createsession" name="createsession" action="/sessions/<%= user.id %>" method="POST">
+        <div style="color:#4f4f4f;" class="ui stacked segment">
+          <div class="field">
+            TÍTULO
+              <input type="text" name="title" placeholder="Título de la Sesión">
+          </div>
+
+          <div style="color:#4f4f4f;" class="field">
+            DESCRIPCIÓN
+              <input type="text" name="description" placeholder="Descripción de la Sesión">
+          </div>
+
+          <input type="hidden" name="invitedCode" id='invitedCode' value='1'>
+
+          <div class="ui info message">
+            <div class="header">
+              ¡Atención!
+            </div>
+            <ul class="list">
+              <li>Una vez creada la sesión serás dirigido a su panel donde podrás crear escenarios y mantener un control de la sesión</li>
+              <li>¿Más sesiones? Claro que si! Puedes crear todas las que desees!</li>
+            </ul>
+          </div>
+
+          <div class="ui buttons">
+          <button class="ui teal button">Crear Sesión</button>
+          </div>
+         </div>
+
+      </form>
+
+  </div>
+
+   <!--SCRIPT PARA CREAR CODIGO DE LA SESIÓN-->
+  <script type="text/javascript">
+
+    function rand_code(chars, lon){
+
+      code = "";
+      for (x=0; x < lon; x++)
+      {
+      rand = Math.floor(Math.random()*chars.length);
+      code += chars.substr(rand, 1);
+      }
+      return code;
+    }
+
+    chars = "0123456789abcdefghijklmnopkrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ";
+    lon = 30;
+
+    code = rand_code(chars,lon);
+
+    document.createsession.invitedCode.value = code;
+
+  </script>
+
+</body>

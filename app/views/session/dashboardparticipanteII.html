@@ -1,0 +1,290 @@
+<!--<!DOCTYPE html>-->
+
+<html ng-app="myApp" >
+
+  <head >
+
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="../js/session.js"></script>
+
+  </head>
+
+  <body>
+
+  <!--MENÚ DE CABECERA-->
+  <div class="ui teal menu">
+    <a class="header item"><b>SW DECISIONES</b></a>
+    <a class="item">BIENVENIDO <%= user.name %> </a>
+    <a href="/dashboarduser" class="item">Dashboard</a>
+    <a href="/createsession" class="item">Crear Sesión</a>
+    <a href="/signintosession" class="item">Ingresar a Sesión</a>
+    <a href="javascript:window.history.back();" class="active item">REGRESAR</a>
+    <div class="right menu" id="google_translate_element"></div>
+    <div class="right menu">
+      <a href="/logout" class="item">
+      <i class="sign out icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <!--SCRIPT PARA TRADUCIR PÁGINA -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- CONTENIDO INFORMACION SESION-ESCENARIO-->
+  <div align="center" class="ui raised very padded text container segment" ng-controller="listarsesionesII">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="users icon"></i>
+      <div style="color:#008080;" class="content">
+        Participante de Escenario
+        <div class="sub header">Conversa con los otros participantes y selecciona tus decisiones!</div>
+      </div>
+    </h2>
+
+    <table class="ui celled striped table">
+      <thead>
+          <tr>
+            <th> Título </th>
+            <th> Descripcion </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="session in session | filter:{id:'<%= session.id_session %>'}">
+        <td style="font-size:80%">{{session.title}}</td>
+        <td style="font-size:80%">{{session.description}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="ui celled striped table" ng-controller="listarsescenarios">
+      <thead>
+          <tr>
+            <th> Escenario </th>
+          </tr>
+        </thead>
+      <tbody>
+
+      <tr id="liststage" ng-repeat="stage in stage | filter:{id:'<%= session.id_stage %>'}">
+        <td style="font-size:80%">{{stage.description}}
+          <input type="hidden" id="id_stage" value='<%= session.id_stage %>'>
+          <input type="hidden" id="estado_stage" value='{{stage.estaTerminada}}'>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button onclick='obtener_estado()' class="ui teal button" id='button'>Obtener Estado</button>
+    <div id="estadoInner"></div>
+
+  </div>
+
+  <!-- CONTENIDO DECISIONES-->
+  <div align="center" class="ui raised very padded text container segment" style="display:none" id="decisiones">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="browser icon"></i>
+      <div style="color:#008080;" class="content">
+        Decisiones
+        <div class="sub header">Selecciona las mejores opciones para resolver este escenario. Otorga una puntuación!</div>
+      </div>
+    </h2>
+
+    <!--Formulario de Decisiones -->
+    <form method="post" action="/votar">
+
+      <table class="ui celled striped table" ng-controller="listardecisiones">
+        <thead>
+            <tr>
+              <th> Nombre </th>
+              <th> Mecanismo </th>
+              <th> Resultado </th>
+              <th> Prioridad </th>
+            </tr>
+          </thead>
+        <tbody>
+        <tr ng-repeat="decision in decision">
+          <td style="font-size:70%"><b>{{decision.name}}</b></td>
+          <td style="font-size:70%">{{decision.mechanism}}</td>
+          <td style="font-size:70%">{{decision.result}}</td>
+          <td style="font-size:70%">
+            <div class="ui form">
+              <div class="field">
+                <select id="d{{decision.id}}">
+                  <option value="0">Nula</option>
+                  <option value="1">Baja</option>
+                  <option value="2">Media</option>
+                  <option value="3">Alta</option>
+                </select>
+              </div>
+            <!--</div>
+            <div class="ui mini icon input">
+              <input id="d{{decision.id}}" value="0" type="text">
+              <i class="star half empty icon"></i>
+            </div>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+  </form>
+
+  <div class="ui buttons">
+    <button class="ui teal button" onclick='obtener_valores()'> Enviar Voto </button>
+  </div>
+
+  </div>
+
+  <!-- CONTENIDO CHAT-->
+  <div style="position: absolute; width: 310px; height: 345px !important; overflow: auto; top: 57px; left: 10px; background-color: #00B5AD; color: #fff; padding: 15px; z-index: 2; word-wrap: break-word; position: fixed;">
+
+    <h4>CHAT</h4>
+
+    <!-- Envío de Mensajes -->
+    <form class="ui form" action=''>
+
+      <input type="hidden" id="name" value="<%=user.name%>">
+      <input type="hidden" id="chatName" value="ChatStageN<%= session.id_stage %>">
+      <label>MENSAJE</label>
+      <input type="text" id="message">
+      <div class="ui buttons">
+        <button class="mini ui button" id='btn'>Enviar</button>
+      </div>
+        
+    </form>
+
+    <!-- Visualización de Mensajes -->
+    <div class="ui celled ordered list" id='chatSW'>
+
+
+    </div>
+
+  </div>
+
+<!-- Scripts y Configuración del Chat -->
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+  <script>
+
+    // Initialize Firebase
+    var config = {
+
+      apiKey: "AIzaSyD5NqEe6iQkvY1xuoTEJu9LpNSEAegILmM",
+      authDomain: "chat-sw.firebaseapp.com",
+      databaseURL: "https://chat-sw.firebaseio.com",
+      projectId: "chat-sw",
+      storageBucket: "chat-sw.appspot.com",
+      messagingSenderId: "783766142637"
+
+    };
+
+    firebase.initializeApp(config);
+    var db = firebase.database();
+
+    //Capturando user y mensaje
+    var txtName = document.getElementById('name');
+    var txtMessage = document.getElementById('message');
+    var btn = document.getElementById('btn');
+    var chatSW = document.getElementById('chatSW');
+    var chatName = document.getElementById('chatName');
+
+    btn.addEventListener("click", function() {
+
+      var name = txtName.value;
+      var message = txtMessage.value;
+      var html = "<div class='item'><b>"+name+': </b>'+message+'</div>';
+      chatSW.innerHTML += html;
+
+      db.ref(chatName.value).push({
+        name:name,
+        message:message
+      });
+
+    });
+
+    db.ref(chatName.value).on('value', function(snapshot) {
+      var html = '';
+      snapshot.forEach(function (e) {
+        var element = e.val();
+        var name = element.name;
+        var message = element.message;
+        html += "<div class='item'><b>"+name+': </b>'+message+'</div>';
+      });
+      chatSW.innerHTML = html;
+    });
+
+  </script>
+
+  <script type="text/javascript">
+
+      function obtener_estado(){
+
+      estado = document.getElementById('estado_stage').value;
+      if(estado=='false'){
+        document.getElementById('estadoInner').innerHTML = 'El escenario está ABIERTO';
+        document.getElementById('decisiones').style.display="block";
+        document.getElementById('button').style.display="none";
+      }else if(estado=='true'){
+        document.getElementById('estadoInner').innerHTML = 'El escenario está CERRADO';
+        document.getElementById('button').style.display="none";
+      }
+      
+
+    }
+
+    function obtener_valores(){
+
+      d1 = document.getElementById('d1').value;
+      d2 = document.getElementById('d2').value;
+      d3 = document.getElementById('d3').value;
+      d4 = document.getElementById('d4').value;
+      d5 = document.getElementById('d5').value;
+      d6 = document.getElementById('d6').value;
+      d7 = document.getElementById('d7').value;
+      d8 = document.getElementById('d8').value;
+      d9 = document.getElementById('d9').value;
+      d10 = document.getElementById('d10').value;
+      d11 = document.getElementById('d11').value;
+      d12 = document.getElementById('d12').value;
+      d13 = document.getElementById('d13').value;
+      d14 = document.getElementById('d14').value;
+      d15 = document.getElementById('d15').value;
+      d16 = document.getElementById('d16').value;
+      d17 = document.getElementById('d17').value;
+      id_stage = document.getElementById('id_stage').value;
+      str = '/votar/'
+
+      link = str.concat(d1,',',d2,',',d3,',',d4,',',d5,',',d6,',',d7,',',d8,',',d9,',',d10,',',d11,',',d12,',',d13,',',d14,',',d15,',',d16,',',d17,',',id_stage);
+
+      location.href =link;
+
+    }
+
+  </script>
+
+</body>

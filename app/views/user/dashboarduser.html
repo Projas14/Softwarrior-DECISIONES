@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="js/session.js"></script>
+
+    </head>
+
+<body>
+
+  <!--MENÚ DE CABECERA-->
+  <div class="ui teal menu">
+    <a class="header item"><b>SW DECISIONES</b></a>
+    <a class="item">BIENVENIDO <%= user.name %> </a>
+    <a href="#" class="active item">Dashboard</a>
+    <a href="/createsession" class="item">Crear Sesión</a>
+    <a href="/signintosession" class="item">Ingresar a Sesión</a>
+    <div class="right menu" id="google_translate_element"></div>
+    <div class="right menu">
+      <a href="/logout" class="item">
+      <i class="sign out icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <!--SCRIPT PARA TRADUCIR PÁGINA -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- CONTENIDO PERFIL-->
+  <div align="center" class="ui raised very padded text container segment">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="user icon"></i>
+      <div style="color:#008080;" class="content">
+        Perfil de Usuario
+        <div class="sub header">Bienvenido. Aquí podrás revisar tus datos</div>
+      </div>
+    </h2>
+
+    <!--Contenido-->
+    <div style="color:#4f4f4f;" class="ui list" id='editUser'>
+      <div class="item"><b>Nombre</b><br> <%= user.name %> </div>
+      <div class="item"><b>Correo</b><br> <%= user.email %> </div>
+    </div>
+
+    <div align="right">
+      <button onclick="verificador('editar');" class="mini teal ui button">Editar Datos</button>
+      <button onclick="verificador('registrar');" class="mini red ui button">Registrarse</button>
+    </div>
+
+
+  </div>
+
+  <!-- CONTENIDO SESION-->
+  <div align="center" class="ui raised very padded text container segment">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="users icon"></i>
+      <div style="color:#008080;" class="content">
+        Mis Sesiones
+        <div class="sub header">Revisa tus sesiones creadas y en las que participas</div>
+      </div>
+    </h2>
+
+    <b>SESIONES CREADAS</b>
+    <table class="ui celled striped table" ng-controller="listarsesionesI">
+      <thead>
+          <tr>
+            <th> Título </th>
+            <th> Descripcion </th>
+            <th> Código de Invitación </th>
+            <th> Acciones </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="session in session | filter:{user_id:<%= user.id %>}:true">
+        <td style="font-size:80%">{{ session.title }}</td>
+        <td style="font-size:80%">{{ session.description }}</td>
+        <td style="font-size:80%">{{ session.invitedCode }}</td>
+        <td style="font-size:50%">
+          <a href="/dashboardsession/{{session.id}}" class="ui mini green button"><i class="sign in icon"></i></a>
+          <a href="/updatesession/{{session.id}}" class="ui mini teal button"><i class="edit icon"></i></a>
+          <form method="POST" action="/sessions?_method=DELETE">
+            <input type="hidden" name="id" value="{{session.id}}">
+            <button class="ui mini red button"><i class="delete icon"></i></button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--Contenido Sesiones creadas-->
+    <div align="right">
+         <a href="/createsession" class="ui mini teal button">
+         <i class="add user icon"></i>
+         Crear Sesión
+         </a>
+    </div>
+
+    <br><br>
+    <b>ESCENARIOS EN LOS QUE HAS PARTICIPADO</b>
+    <table class="ui celled striped table" ng-controller="listarsescenariosparticipante">
+      <thead>
+          <tr>
+            <th> Descripcion </th>
+            <th> Estado </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="participante in participante | filter:{user_id:<%= user.id %>}:true">
+        <td style="font-size:80%">
+          {{ getNameFor(participante.stageId) }}
+        </td>
+        <td style="font-size:80%">
+          {{ getStateFor(participante.stageId)}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--Contenido Sesiones participante-->
+    <div align="right">
+         <a href="/signintosession" class="ui mini teal button">
+         <i class="sign in icon"></i>
+         Ingresar a Sesión
+         </a>
+    </div>
+
+    <!--SCRIPT PARA CREAR CREDENCIALES DE UN INVITADO-->
+    <script type="text/javascript">
+
+        function verificador(btn)
+        {
+          if(btn == 'editar'){
+
+            if (<%= user.esInvitado %> ==true){
+              alert("Registrate para administrar tus datos!");
+            }
+            if (<%= user.esInvitado %> ==false){
+              location.href = '/updateuser';
+            }
+
+          }
+          else if(btn == 'registrar'){
+
+            if (<%= user.esInvitado %> ==false){
+              alert("Ya estás registrado!");
+            }
+            if (<%= user.esInvitado %> ==true){
+              location.href = '/updateuser';
+            }
+          }
+        }
+
+    </script>
+
+  </div>
+
+</body>

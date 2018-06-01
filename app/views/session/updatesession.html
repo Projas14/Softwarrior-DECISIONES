@@ -1,0 +1,121 @@
+<!--<!DOCTYPE html>-->
+
+<html ng-app="myApp" >
+
+  <head >
+
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="../js/session.js"></script>
+
+
+  </head>
+
+  <body>
+
+  <!--MENÚ DE CABECERA-->
+  <div class="ui teal menu">
+    <a class="header item"><b>SW DECISIONES</b></a>
+    <a class="item">BIENVENIDO <%= user.name %> </a>
+    <a href="/dashboarduser" class="item">Dashboard</a>
+    <a href="/createsession" class="item">Crear Sesión</a>
+    <a href="/signintosession" class="item">Ingresar a Sesión</a>
+    <a href="/dashboarduser" class="active item">REGRESAR</a>
+    <div class="right menu" id="google_translate_element"></div>
+    <div class="right menu">
+      <a href="/logout" class="item">
+      <i class="sign out icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <!--SCRIPT PARA TRADUCIR PÁGINA -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- CONTENIDO PRINCIPAL SESION-->
+  <div align="center" class="ui raised very padded text container segment" ng-controller="listarsesionesII">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="users icon"></i>
+      <div style="color:#008080;" class="content">
+        Edita tu Sesión
+        <div class="sub header">Actualiza los parámetros de tu sesión.</div>
+      </div>
+    </h2>
+
+    <table class="ui celled striped table" id="table_sesion">
+      <thead>
+          <tr>
+            <th> Título </th>
+            <th> Descripcion </th>
+            <th> Código de Invitación </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="session in session | filter:{id:<%= session.id %>}:true">
+        <td id="title_sesion" style="font-size:80%">{{session.title}}</td>
+        <td id="description_sesion" style="font-size:80%">{{session.description}}</td>
+        <td id="invitedCode_sesion" style="font-size:80%">{{session.invitedCode}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button class="ui mini red button" onclick="actualizar()">Actualizar Parámetros</button>
+    <br><br>
+
+    <form class="ui large form" id="form" style="display:none" method="POST" action="/sessions?_method=PUT">
+      TÍTULO
+      <input type="text" name="title" id="title">
+      DESCRIPCIÓN
+      <input type="text" name="description" id="description">
+      <input type="hidden" name="invitedCode" id="invitedCode" value="">
+      <input type="hidden" name="id" id="id" value="<%= session.id %>">
+      <p align="right"><button class="ui mini teal button">Actualizar</button></p>
+
+    </form>
+
+  </div>
+
+  <script type="text/javascript">
+
+    function actualizar() {
+
+      document.getElementById('form').style.display="block";
+      document.getElementById('title').value = document.getElementById('title_sesion').innerHTML;
+      document.getElementById('description').value = document.getElementById('description_sesion').innerHTML;
+      document.getElementById('invitedCode').value = document.getElementById('invitedCode_sesion').innerHTML;
+
+    }
+    
+  </script>
+
+
+  </body>
+
+</html>

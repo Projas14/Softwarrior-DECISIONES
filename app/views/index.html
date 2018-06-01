@@ -1,0 +1,180 @@
+<html>
+
+   <head>
+
+      <meta charset="utf-8">
+      <title>SW Decisiones</title>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+      <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+   </head>
+
+   <body>
+      <div ng-app = "mainApp">
+
+        <!--MENÚ DE CABECERA-->
+        <div class="ui teal menu">
+          <a class="header item"><b>SW DECISIONES</b></a>
+          <a href="#home" class="item active">Home</a>
+          <a href="#signup" class="item active">Sign up</a>
+          <a href="#signinuser" class="item active">Sign in User</a>
+          <a href="/signupguest" class="item active">Sign in Guest</a>
+          <div class="right menu" id="google_translate_element"></div>
+          <div class="right menu">
+            <a href="#about" class="item">
+            <i class="user icon"></i>
+            </a>
+          </div>
+        </div>
+
+        <!--SCRIPT PARA TRADUCIR PÁGINA -->
+        <script type="text/javascript">
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+          }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+        <!--CONTENIDO-->
+         <div align="center" class="ui raised very padded text container segment" ng-view></div>
+
+         <!--Home-->
+         <script type = "text/ng-template" id = "home.htm">
+
+            <h2 class="ui teal image header">
+              <!--<img src="assets/images/logo.png" class="image">-->
+              <div class="content">
+                <h1>SW DECISIONES</h1>
+                <h3>¡La nueva forma de tomar decisiones!</h3>
+              </div>
+            </h2>
+
+            <p> Bienvenido al <b>Sistema de Decisiones</b> de Softwarrior. Acá podrás crear sesiones, plantear escenarios y llevar a los participantes a discutir como resolver el problema mediante las decisiones preestablecidas.</p>
+
+         </script>
+
+
+         <script type = "text/ng-template" id = "signup.htm">
+
+            <h2 class="ui header">Formulario de Registro</h2>
+
+            <form class="ui large form" id="signup" name="signup" method="post" action="/signup">
+              <div class="ui stacked segment">
+                <div class="field">
+                  Nombre
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="name" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="field">
+                  Correo
+                  <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="text" name="email" placeholder="Correo Electrónico">
+                  </div>
+                </div>
+                <div class="field">
+                  Contraseña
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="Password">
+                  </div>
+                <input type="hidden" name="esInvitado" value='0'>
+                <input type="hidden" name="esadmin" value='0'>
+                </div>
+                <div class="ui buttons">
+                <button class="ui teal button">Registrarse</button>
+               </div>
+               </div>
+            </form>
+
+         </script>
+
+         <!--Login Usuarios-->
+          <script type = "text/ng-template" id = "signinuser.htm">
+
+            <h2 class="ui header">Login Usuarios Registrados</h2>
+
+            <form class="ui large form" id="signin" name="signin" method="post" action="/home">
+              <div style="color:#4f4f4f;" class="ui stacked segment">
+                <div class="field">
+                  Correo
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="email" placeholder="Correo Electrónico">
+                  </div>
+                </div>
+                <div class="field">
+                  Contraseña
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="Password">
+                  </div>
+                </div>
+                <div class="ui buttons">
+                <button class="ui teal button">Ingresar como Usuario</button>
+                </div>
+              </div>
+            </form>
+
+         </script>
+
+      </div>
+
+      <!--SCRIPT DEL PAGE-CONTROLLER ANGULAR-->
+      <script>
+         var mainApp = angular.module("mainApp", ['ngRoute']);
+         mainApp.config(['$routeProvider', function($routeProvider) {
+            $routeProvider.
+
+            when('/home', {
+               templateUrl: 'home.htm',
+               controller: 'HomeController'
+            }).
+
+            when('/signup', {
+               templateUrl: 'signup.htm',
+               controller: 'SignupController'
+            }).
+
+            when('/signinuser', {
+               templateUrl: 'signinuser.htm',
+               controller: 'SigninUserController'
+            }).
+
+            otherwise({
+               redirectTo: '/home'
+            });
+         }]);
+
+         mainApp.controller('HomeController', function($scope) {
+            $scope.message = "Paǵina principaaal";
+         });
+
+         mainApp.controller('SignupController', function($scope) {
+            $scope.message = "Pagina pa registrarse";
+         });
+
+         mainApp.controller('SigninUserController', function($scope) {
+            $scope.message = "Pagina pa loguearse como user";
+         });
+
+      </script>
+
+   </body>
+</html>

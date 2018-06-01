@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+    </head>
+<body>
+
+<!--MENÚ DE CABECERA-->
+<div class="ui teal menu">
+  <a class="header item"><b>SW DECISIONES</b></a>
+  <a class="item">BIENVENIDO <%= admin.name %> </a>
+  <a href="#" class="active item">Dashboard</a>
+  <a href="/VerUsuario" class="item"> Lista de Usuarios </a>
+  <a href="/Versession" class="item"> Lista de Sessiones </a>
+  <div class="right menu">
+    <a href="/logout" class="item">
+    <i class="sign out icon"></i>
+    </a>
+  </div>
+</div>
+
+<!-- CONTENIDO PERFIL-->
+<div align="center" class="ui raised very padded text container segment">
+
+  <!--Header-->
+  <h2 class="ui header">
+    <i class="user icon"></i>
+    <div style="color:#008080;" class="content">
+      Perfil de Administrador
+      <div class="sub header">Bienvenido. Aquí podrás adminsitrar la página</div>
+    </div>
+  </h2>
+
+  <!--Contenido-->
+  <div style="color:#4f4f4f;">
+    <div class="item"><b>Nombre</b><br> <%= admin.name %> </div>
+    <div class="item"><b>Correo</b><br> <%= admin.email %> </div>
+  </div>
+
+  <div class="ui buttons" id='boton'>
+    <a class="ui mini teal button" href='' id='editar'>Editar Datos</a>
+  </div>
+
+</div>
+
+</body>

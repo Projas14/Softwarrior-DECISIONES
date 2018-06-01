@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+  </head>
+
+  <body>
+
+        <!--MENÚ DE CABECERA-->
+        <div class="ui teal menu">
+          <a class="header item"><b>SW DECISIONES</b></a>
+          <a href="/#home" class="item active">Home</a>
+          <a href="/#signup" class="item active">Sign up</a>
+          <a href="/#signinuser" class="item active">Sign in User</a>
+          <a href="/signupguest" class="item active">Sign in Guest</a>
+          <div class="right menu" id="google_translate_element"></div>
+          <div class="right menu">
+            <a href="#about" class="item">
+            <i class="user icon"></i>
+            </a>
+          </div>
+        </div>
+
+        <!--SCRIPT PARA TRADUCIR PÁGINA -->
+        <script type="text/javascript">
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+          }
+        </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <div style="color:#4f4f4f;" class="ui raised very padded text container segment">
+
+        <h2 class="ui header">INGRESA COMO INVITADO</h2>
+
+        Si quieres probar nuestro juego de decisiones puedes ingresar como invitado, una vez que decidas quedarte con nosotros puedes registrar tu cuenta y disfrutar todas las bondades de la página!<br><br>
+
+        <form class="ui large form" id="signup" name="signup" method="post" action="/signup">
+          <div style="color:#4f4f4f;" class="ui stacked segment">
+            <input type="hidden" name="email" id='email' value=''>
+            <input type="hidden" name="name" id='name' value=''>
+            <input type="hidden" name="password" value="1234">
+            <input type="hidden" name="esInvitado" id='esInvitado' value='1'>
+            <input type="hidden" name="esadmin" value='0'>
+            <div class="ui buttons">
+              <button class="ui red button">Ingresar como Invitado</button>
+            </div>
+          </div>
+        </form>
+
+    </div>
+
+    <!--SCRIPT PARA CREAR CREDENCIALES DE UN INVITADO-->
+    <script type="text/javascript">
+
+      function rand_code(chars, lon){
+
+        code = "";
+        for (x=0; x < lon; x++)
+        {
+        rand = Math.floor(Math.random()*chars.length);
+        code += chars.substr(rand, 1);
+        }
+        return code;
+      }
+
+      chars = "0123456789abcdefABCDEF";
+      lon = 8;
+
+      str1 = 'INVITADO';
+      str2 = rand_code(chars,lon);
+      str3 = '@correo.cl';
+
+      document.signup.email.value = str1.concat(str2,str3);
+      document.signup.name.value = str1.concat(str2);
+      document.signup.esInvitado.value = true;
+      document.signup.esadmin.value = false;
+
+    </script>
+
+  </body>
+
+</html>

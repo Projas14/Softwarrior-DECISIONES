@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+    </head>
+<body>
+
+<!--MENÚ DE CABECERA-->
+<div class="ui teal menu">
+  <a class="header item"><b>SW DECISIONES</b></a>
+  <a href="#" class="active item">Registrarse</a>
+  <a href="#" class="item">Iniciar Sesión administrador</a>
+</div>
+
+<div style="color:#4f4f4f;" class="ui raised very padded text container segment">
+
+
+      <h2 class="ui header">Login Usuarios Registrados</h2>
+
+      <form class="ui large form" id="signinadmin" name="signinadmin" method="post" action="/signinadmin">
+        <div style="color:#4f4f4f;" class="ui stacked segment">
+          <div class="field">
+            Correo
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" name="email" placeholder="Correo Electrónico">
+            </div>
+          </div>
+          <div class="field">
+            Contraseña
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="ui buttons">
+          <button class="ui teal button">Ingresar como Usuario</button>
+          </div>
+        </div>
+      </form>
+
+   </script>
+
+</div>
+
+</body>

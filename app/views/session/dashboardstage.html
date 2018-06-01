@@ -1,0 +1,495 @@
+<!--<!DOCTYPE html>-->
+<meta name="robots" content="noindex">
+<html ng-app="myApp">
+
+  <head >
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.1/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+    <meta charset="utf-8">
+    <title>SW Decisiones</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
+     <style type="text/css">
+        body {
+          background-color: #DADADA;
+        }
+        body > .grid {
+          height: 100%;
+        }
+        .image {
+          margin-top: -100px;
+        }
+        .column {
+          max-width: 450px;
+        }
+      </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="../js/session.js"></script>
+
+    <!--Script para graficar-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  </head>
+
+  <body>
+  <!--MENÚ DE CABECERA-->
+  <div class="ui teal menu">
+    <a class="header item"><b>SW DECISIONES</b></a>
+    <a class="item">BIENVENIDO <%= user.name %> </a>
+    <a href="/dashboarduser" class="item">Dashboard</a>
+    <a href="/createsession" class="item">Crear Sesión</a>
+    <a href="/signintosession" class="item">Ingresar a Sesión</a>
+    <a href="javascript:window.history.back();" class="active item">REGRESAR</a>
+    <div class="right menu" id="google_translate_element"></div>
+    <div class="right menu">
+      <a href="/logout" class="item">
+      <i class="sign out icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <!--SCRIPT PARA TRADUCIR PÁGINA -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- CONTENIDO PRINCIPAL ESCENARIO-->
+  <div align="center" class="ui raised very padded text container segment" ng-controller="listarsescenarios">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="area chart icon"></i>
+      <div style="color:#008080;" class="content">
+        Dashboard de Escenario
+        <div class="sub header">Visualiza en tiempo real el Escenario, conversa con los participantes, maneja el tiempo y más.</div>
+      </div>
+    </h2>
+
+    <table class="ui celled striped table" ng-controller="listarsesionesII">
+      <thead>
+          <tr>
+            <th> Título </th>
+            <th> Descripcion </th>
+            <th> Código de Invitación </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="session in session | filter:{id:<%= session.id_session %>}:true">
+        <td style="font-size:80%">{{session.title}}</td>
+        <td style="font-size:80%">{{session.description}}</td>
+        <td style="font-size:80%">{{session.invitedCode}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="ui celled striped table">
+      <thead>
+          <tr>
+            <th> Escenario </th>
+          </tr>
+        </thead>
+      <tbody>
+
+      <tr ng-repeat="stage in stage | filter:{id:<%= session.id_stage %>}:true">
+        <td id="description_stage" style="font-size:80%">{{stage.description}}</td>
+        <td id="estadoEscenario" style="display:none">{{stage.estaTerminada}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- CONTENIDO ESCENARIOS-RESULTADOS -->
+  <div align="center" class="ui raised text container segment" ng-controller="listarsescenarios">
+
+    <!--Header-->
+    <h2 class="ui header">
+      <i class="line chart icon"></i>
+      <div style="color:#008080;" class="content">
+        RESULTADOS
+        <div class="sub header">Estos son los resultados de las elecciones de los participantes!</div>
+      </div>
+    </h2>
+
+    <!--Resultados-->
+    <table class="ui celled striped table" ng-controller="listarresultados" id='decisionParticipanteTable'>
+      <thead>
+          <tr>
+            <th style="font-size:60%"> User </th>
+            <th style="font-size:50%"> D1 </th>
+            <th style="font-size:50%"> D2 </th>
+            <th style="font-size:50%"> D3 </th>
+            <th style="font-size:50%"> D4 </th>
+            <th style="font-size:50%"> D5 </th>
+            <th style="font-size:50%"> D6 </th>
+            <th style="font-size:50%"> D7 </th>
+            <th style="font-size:50%"> D8 </th>
+            <th style="font-size:50%"> D9 </th>
+            <th style="font-size:50%"> D10 </th>
+            <th style="font-size:50%"> D11 </th>
+            <th style="font-size:50%"> D12 </th>
+            <th style="font-size:50%"> D13 </th>
+            <th style="font-size:50%"> D14 </th>
+            <th style="font-size:50%"> D15 </th>
+            <th style="font-size:50%"> D16 </th>
+            <th style="font-size:50%"> D17 </th>
+          </tr>
+        </thead>
+      <tbody>
+
+      <tr ng-repeat="decisionParticipante in decisionParticipante | filter:{stageId:<%= session.id_stage %>}:true">
+        <td style="font-size:60%">{{ getNameFor(decisionParticipante.user_id) }}</td>
+        <td style="font-size:60%">{{decisionParticipante.d1}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d2}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d3}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d4}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d5}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d6}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d7}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d8}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d9}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d10}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d11}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d12}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d13}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d14}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d15}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d16}}</td>
+        <td style="font-size:60%">{{decisionParticipante.d17}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="ui inverted teal celled striped table" id="resultTable">
+      <thead>
+        <tr>
+            <th style="font-size:60%"> D1 </th>
+            <th style="font-size:60%"> D2 </th>
+            <th style="font-size:60%"> D3 </th>
+            <th style="font-size:60%"> D4 </th>
+            <th style="font-size:60%"> D5 </th>
+            <th style="font-size:60%"> D6 </th>
+            <th style="font-size:60%"> D7 </th>
+            <th style="font-size:60%"> D8 </th>
+            <th style="font-size:60%"> D9 </th>
+            <th style="font-size:60%"> D10 </th>
+            <th style="font-size:60%"> D11 </th>
+            <th style="font-size:60%"> D12 </th>
+            <th style="font-size:60%"> D13 </th>
+            <th style="font-size:60%"> D14 </th>
+            <th style="font-size:60%"> D15 </th>
+            <th style="font-size:60%"> D16 </th>
+            <th style="font-size:60%"> D17 </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+          <td style="font-size:80%"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button onclick='testeando()' class="ui teal button">Obtener Gráficas</button>
+    <div id='graficoBarras'></div>
+
+
+  </div>
+
+  <!-- PARTICIPANTES DEL ESCENARIO Y GRÁFICO CIRCULAR-->
+  <div style="position: absolute; width: 300px; height: 366px !important; overflow: auto; top: 57px; left: 1040px; background-color: #00B5AD; color: #fff; padding: 15px; z-index: 2; word-wrap: break-word; position: fixed;">
+    <h4>PARTICIPANTES</h4>
+
+    <div id='cantidadParticipantes'></div>
+    <div style="display: none;"><table class="ui celled striped table" ng-controller="listarparticipantes" id="participanteTable">
+      <thead>
+          <tr>
+            <th> Título </th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr ng-repeat="participante in participante | filter:{stageId:<%= session.id_stage %>}:true">
+        <td style="font-size:80%">{{participante.user_id}}</td>
+      </tr>
+      </tbody>
+    </table></div>
+
+    <br><button onclick='obtener_participantes()' class="ui mini button">Calcular</button>
+
+
+    <h4>RESUMEN RESULTADOS</h4>
+    <div id='graficoCircular'></div>
+
+  </div>
+
+
+  <!-- CONTENIDO ESTADO ESCENARIO-->
+  <div style="position: absolute; width: 300px; height: 230px !important; overflow: auto; top: 430px; left: 1040px; background-color: #00B5AD; color: #fff; padding: 15px; z-index: 2; word-wrap: break-word; position: fixed;">
+
+    <h4>ESTADO DEL ESCENARIO</h4>
+
+    <!-- Visualización de Mensajes -->
+    <div class="ui celled ordered list" id='estadoInner'></div>
+
+    <form class="ui large form" id="form" style="display:none" method="POST" action="/stages?_method=PUT">
+      <input type="hidden" name="description" id="description">
+      <input type="hidden" name="id" id="id" value="<%= session.id_stage %>">
+      <input type="hidden" name="estaTerminada" id="estaTerminada" value="1">
+      <p align="center"><button class="ui mini red button">CERRAR ESCENARIO</button></p>
+    </form>
+
+    <form class="ui large form" id="form2" style="display:none" method="POST" action="/stages?_method=PUT">
+      <input type="hidden" name="description" id="description2">
+      <input type="hidden" name="id" id="id" value="<%= session.id_stage %>">
+      <input type="hidden" name="estaTerminada" id="estaTerminada" value="0">
+      <p align="center"><button class="ui mini green button">ABRIR ESCENARIO</button></p>
+    </form>
+
+    <br><button onclick='obtener_estado()' class="ui mini button" style="display:block;" id="button">Obtener Estado</button>
+
+  </div>
+
+  <!-- CONTENIDO CHAT-->
+  <div style="position: absolute; width: 310px; height: 320px !important; overflow: auto; top: 57px; left: 10px; background-color: #00B5AD; color: #fff; padding: 15px; z-index: 2; word-wrap: break-word; position: fixed;">
+
+    <h4>CHAT</h4>
+
+    <!-- Envío de Mensajes -->
+    <form class="ui form" action=''>
+
+      <input type="hidden" id="name" value="<%=user.name%>">
+      <input type="hidden" id="chatName" value="ChatStageN<%= session.id_stage %>">
+      <label>MENSAJE</label>
+      <input type="text" id="message">
+      <div class="ui buttons">
+        <button class="mini ui button" id='btn'>Enviar</button>
+      </div>
+
+    </form>
+
+    <!-- Visualización de Mensajes -->
+    <div class="ui celled ordered list" id='chatSW'>
+
+
+    </div>
+
+  </div>
+
+  <!-- CONTENIDO TEMPORIZADOR-->
+  <div style="position: absolute; width: 310px; height: 280px !important; overflow: auto; top: 380px; left: 10px; background-color: #00B5AD; color: #fff; padding: 15px; z-index: 2; word-wrap: break-word; position: fixed;">
+
+    <h4>TEMPORIZADOR</h4>
+
+    <div ng-app='TimerApp'>
+
+      <div ng-controller="TimerCtrl">
+
+        <!-- Contador -->
+        <div class="ui segment" align="center">
+          <h2 style="color:#000000";>
+            {{hour}} : {{min}} : {{seg}}
+          </h2>
+        </div>
+
+        <!-- Botones -->
+        <p align="center">
+        <button class="ui tiny button" ng-click='startTimer()'> INICIAR </button>
+        <button class="ui tiny button" ng-click='pauseTimer()'> PAUSAR </button>
+        <button class="ui tiny button" ng-click='resetTimer()'> RESET </button>
+        <br>
+        <button class="ui mini black button" ng-click='Definir()'> DEFINIR </button>
+        <button class="ui mini black button" ng-click='Agregar()'> AGREGAR </button>
+        
+
+        <!--Form para ingresar tiempo-->
+        <h5>Ingresa el tiempo</h5>
+
+        <div class="ui mini icon input">
+          <input placeholder="00" type="text" size="2" maxlength="2" id="hour" value="00">:
+          <input placeholder="00" type="text" size="2" maxlength="2" id="min" value="00">:
+          <input placeholder="00" type="text" size="2" maxlength="2" id="seg" value="00">
+        </div>
+        </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts y Configuración del Chat -->
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+  <script>
+
+    // Initialize Firebase
+    var config = {
+
+      apiKey: "AIzaSyD5NqEe6iQkvY1xuoTEJu9LpNSEAegILmM",
+      authDomain: "chat-sw.firebaseapp.com",
+      databaseURL: "https://chat-sw.firebaseio.com",
+      projectId: "chat-sw",
+      storageBucket: "chat-sw.appspot.com",
+      messagingSenderId: "783766142637"
+
+    };
+
+    firebase.initializeApp(config);
+    var db = firebase.database();
+
+    //Capturando user y mensaje
+    var txtName = document.getElementById('name');
+    var txtMessage = document.getElementById('message');
+    var btn = document.getElementById('btn');
+    var chatSW = document.getElementById('chatSW');
+    var chatName = document.getElementById('chatName');
+
+    btn.addEventListener("click", function() {
+
+      var name = txtName.value;
+      var message = txtMessage.value;
+      var html = "<div class='item'><b>"+name+': </b>'+message+'</div>';
+      chatSW.innerHTML += html;
+
+      db.ref(chatName.value).push({
+        name:name,
+        message:message
+      });
+
+    });
+
+    db.ref(chatName.value).on('value', function(snapshot) {
+      var html = '';
+      snapshot.forEach(function (e) {
+        var element = e.val();
+        var name = element.name;
+        var message = element.message;
+        html += "<div class='item'><b>"+name+': </b>'+message+'</div>';
+      });
+      chatSW.innerHTML = html;
+    });
+
+  </script>
+
+<!-- Scripts Resultados y Gráficos -->
+  <script type="text/javascript">
+
+    function obtener_participantes(){
+
+      var resultado = 0;
+      for(var i=1; document.getElementById('participanteTable').rows[i];i++){
+        resultado += 1;
+      }
+
+      document.getElementById('cantidadParticipantes').innerHTML = "Actualmente "+resultado+" persona(s) ha(n) votado";
+
+    }
+
+    function obtener_estado(){
+
+      estado = document.getElementById('estadoEscenario').innerHTML;
+      if(estado=='false'){
+        document.getElementById('estadoInner').innerHTML = 'El escenario está ABIERTO';
+        document.getElementById('form').style.display="block";
+        document.getElementById('button').style.display="none";
+        document.getElementById('description').value = document.getElementById('description_stage').innerHTML;
+      }else if(estado=='true'){
+        document.getElementById('estadoInner').innerHTML = 'El escenario está CERRADO';
+        document.getElementById('form2').style.display="block";
+        document.getElementById('button').style.display="none";
+        document.getElementById('description2').value = document.getElementById('description_stage').innerHTML;
+      }
+      
+
+    }
+
+
+    function testeando(){
+
+      var resultados = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      var aux = 0;
+      for (var i=1; document.getElementById('decisionParticipanteTable').rows[i];i++){
+        for (var j=1; document.getElementById('decisionParticipanteTable').rows[i].cells[j];j++){
+          resultados[j] += parseInt(document.getElementById('decisionParticipanteTable').rows[i].cells[j].innerHTML);
+        }
+      }
+
+      for (var i=0; document.getElementById('resultTable').rows[1].cells[i];i++){
+        document.getElementById('resultTable').rows[1].cells[i].innerHTML = resultados[i];
+      }
+
+      console.log(resultados);
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(dibujar);
+
+      function dibujar(){
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string','Decisión');
+        data.addColumn('number','Resultado');
+        data.addRows([
+            ['D1',resultados[0]],
+            ['D2',resultados[1]],
+            ['D3',resultados[2]],
+            ['D4',resultados[3]],
+            ['D5',resultados[4]],
+            ['D6',resultados[5]],
+            ['D7',resultados[6]],
+            ['D8',resultados[7]],
+            ['D9',resultados[8]],
+            ['D10',resultados[9]],
+            ['D11',resultados[10]],
+            ['D12',resultados[11]],
+            ['D13',resultados[12]],
+            ['D14',resultados[13]],
+            ['D15',resultados[14]],
+            ['D16',resultados[15]],
+            ['D17',resultados[16]]
+          ]);
+        var opciones = {'width':270,
+                        'height':170,
+                        'colors':['#056f6b','#083836','#738786'],
+                        'backgroundColor': '#00b5ad',};
+
+        var opciones2 = {'width':670,
+                        'height':500,
+                        'colors':['#00b5ad']};
+
+        var grafica = new google.visualization.PieChart(document.getElementById('graficoCircular'));
+        var grafica2 = new google.visualization.AreaChart(document.getElementById('graficoBarras'));
+
+        grafica.draw(data,opciones);
+        grafica2.draw(data,opciones2);
+
+      }
+
+    };
+
+  </script>
+
+  </body>
+
+</html>
